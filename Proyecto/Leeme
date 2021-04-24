@@ -1,2 +1,5 @@
 Integrantes: Tomás Guillot y Leandro Giunta
-Proyecto
+Proyecto: Juego de typeo con temática Cowboy
+
+El proyecto es un juego multijugador en el que dos jugadores se enfrentan en desafíos en los que se pone a prueba la velocidad y precisión en el typeo por teclado.
+El primer jugador en terminar de escribir una determinada frase será el primero en disparar, pero su efectividad en dicho disparo va a estar ligado a que tan correcta fue su escritura. El primero en conectar un disparo a su oponente será el ganador. El juego contará con varios avatares a elección del jugador.
