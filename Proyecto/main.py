@@ -12,11 +12,9 @@ def pantallaJuego(pantalla, juno):
     pygame.display.update()
 
 
-def mostrarMenu(screen, anchoPantalla, altoPantalla, mouse):
+def mostrarMenu(screen, anchoPantalla, altoPantalla, mouse, btnEmpezar, btnEmpezarRect):
     fondo = pygame.image.load(os.path.join('Assets', 'menu_placeholder.jpg'))
     COLOR_FONDO = (183, 155, 106)
-    btnEmpezar = pantalla.Boton(anchoPantalla//2, altoPantalla//2, 120, 60, "EMPEZAR")
-    btnEmpezarRect = pygame.Rect(btnEmpezar.posX-btnEmpezar.ancho+70, btnEmpezar.posY-btnEmpezar.alto+30, btnEmpezar.ancho, btnEmpezar.alto)
     txtBtnEmpezar = btnEmpezar.font.render(btnEmpezar.texto, 1, COLOR_FONDO)
     if colisionBotones(btnEmpezarRect, mouse):
         btnEmpezar.color = (0, 0, 0)#Negro
@@ -61,7 +59,7 @@ def main():
         mouse = pygame.mouse.get_pos()
         reloj.tick(FPS)
         if menu == True:
-            mostrarMenu(SCREEN, ANCHOPANTALLA, ALTOPANTALLA, mouse)
+            mostrarMenu(SCREEN, ANCHOPANTALLA, ALTOPANTALLA, mouse, btnEmpezar, btnEmpezarRect)
         else:
             pantallaJuego(SCREEN, JUNO)
         for event in pygame.event.get():
