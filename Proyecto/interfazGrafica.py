@@ -1,4 +1,5 @@
-import pygame, os
+import pygame
+import os
 pygame.font.init()
 
 class Boton:
@@ -7,6 +8,7 @@ class Boton:
     posX, posY = (0, 0)
     ancho, alto = (0, 0)
     texto = ""
+    rect = pygame.rect.Rect(posX, posY, ancho, alto)
 
     def __init__(self, posX, posY, ancho, alto, texto):
         self.posX = posX
@@ -14,6 +16,15 @@ class Boton:
         self.ancho = ancho
         self.alto = alto
         self.texto = texto
+        self.rect = pygame.rect.Rect(posX, posY, ancho, alto)
+
+    def colisionBotones(self, mouse):
+        if self.rect.collidepoint(mouse):
+            self.color = (0, 0, 0)  # Negro
+            return True
+        else:
+            self.color = (255, 255, 255)  # Blanco
+            return False
 
 
 class AreaEntradaTexto:
@@ -29,6 +40,7 @@ class AreaEntradaTexto:
         self.posY = posY
         self.ancho = ancho
         self.alto = alto
+
 
 class Jugador():
     skin = ""
