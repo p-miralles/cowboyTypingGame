@@ -25,19 +25,30 @@ class MenuPrincipal:
 class PantallaJuego:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
-    font_cuenta_regresiva = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 55)
     fondo = pygame.image.load(os.path.join('Assets', 'fondo_placeholder.jpg'))
+
+    font_cuenta_regresiva = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 55)
+    n = 3
 
     areaEntrada = interfazGrafica.AreaEntradaTexto((191, 146, 42), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
     areaEntradaRect = pygame.Rect(areaEntrada.posX, areaEntrada.posY, areaEntrada.ancho, areaEntrada.alto)
-    n = 3
+    font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25)
+    txtIngresado = ""
+    frases = ["Hola"]
+
+    def ingresoDatos(self):
+        pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect)
+        pygame.draw.rect(self.pantalla, (255, 255, 255), pygame.Rect(self.areaEntrada.posX, self.areaEntrada.posY, self.areaEntradaRect.width, self.areaEntradaRect.height//2))
+        input = self.font_txtIngresado.render(self.txtIngresado, True, (0, 0, 0))
+        self.pantalla.blit(input, (5, 400))
+        pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(input.get_width() + 5, 405, 5, 20))
 
     def cuentaRegresiva(self):
-        if (self.n >= 0):
-            if(self.n == 0):
+        if self.n >= 0:
+            if self.n == 0:
                 texto_cuenta_regresiva = self.font_cuenta_regresiva.render("TYPE!", True, (0, 0, 0))
                 self.pantalla.blit(texto_cuenta_regresiva,
-                                   (self.ANCHOPANTALLA // 2 - texto_cuenta_regresiva.get_width() // 2, self.ALTOPANTALLA//3))
+                                   (self.ANCHOPANTALLA//2 - texto_cuenta_regresiva.get_width()//2, self.ALTOPANTALLA//3))
             else:
                 texto_cuenta_regresiva = self.font_cuenta_regresiva.render(str(self.n), True, (0, 0, 0))
                 self.pantalla.blit(texto_cuenta_regresiva, (self.ANCHOPANTALLA//2, self.ALTOPANTALLA//3))
@@ -45,13 +56,15 @@ class PantallaJuego:
         pygame.display.update()
         pygame.time.wait(1000)
 
-    def mostrarJuego(self, juno):
+
+    def mostrarJuego(self, juno, jdos):
         self.pantalla.blit(self.fondo, (0, 0))
-        pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect)
-        pygame.draw.rect(self.pantalla, (255, 255, 255), pygame.Rect(self.areaEntrada.posX, self.areaEntrada.posY, self.areaEntradaRect.width, self.areaEntradaRect.height//2))
         pygame.draw.rect(self.pantalla, (0, 0, 0), juno)
-        if(self.n >= 0):
+        pygame.draw.rect(self.pantalla, (0, 0, 0), jdos)
+        if self.n >= 0:
             self.cuentaRegresiva(self)
+        else:
+            self.ingresoDatos(self)
         ###
         pygame.display.update()
 
@@ -63,9 +76,9 @@ def main():
     SONIDO_DISPARO2 = pygame.mixer.Sound(os.path.join('Assets', 'disparo-reverb.wav'))
 
     #Jugadores
-    JUNO = interfazGrafica.Jugador("", 300, 340, 40, 60)
+    JUNO = interfazGrafica.Jugador("", 350, 340, 40, 60)
     JUNORect = pygame.Rect(JUNO.posX, JUNO.posY, JUNO.ancho, JUNO.alto)
-    JDOS = interfazGrafica.Jugador("", 650, 300, 40, 60)
+    JDOS = interfazGrafica.Jugador("", 550, 30, 20, 30)
     JDOSRect = pygame.Rect(JDOS.posX, JDOS.posY, JDOS.ancho, JDOS.alto)
 
     #Eventos
@@ -85,20 +98,25 @@ def main():
         if mostrar_menu:
             MenuPrincipal.mostrarMenu(menu_p)
         else:
-            PantallaJuego.mostrarJuego(pantalla_j, JUNORect)
+            PantallaJuego.mostrarJuego(pantalla_j, JUNORect, JDOSRect)
 
         #Registro de eventos de usuario
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quit()
-            #if event.type == DISPARA_JUNO:
-                #SONIDO_DISPARO.play()
-            #if event.type == DISPARA_JDOS:
-                #SONIDO_DISPARO.play()
             if mostrar_menu:
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.BTN_EMPEZAR, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     SONIDO_DISPARO1.play()
                     mostrar_menu = False
+            if event.type == pygame.QUIT:
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    pantalla_j.txtIngresado = pantalla_j.txtIngresado[:-1]
+                else:
+                    pantalla_j.txtIngresado += event.unicode
+            if event.type == DISPARA_JUNO:
+                SONIDO_DISPARO2.play()
+            if event.type == DISPARA_JDOS:
+                SONIDO_DISPARO2.play()
         reloj.tick(FPS)
 if __name__ == "__main__":
     main()
