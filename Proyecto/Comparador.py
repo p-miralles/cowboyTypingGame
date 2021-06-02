@@ -1,5 +1,5 @@
 class comparador:
-    frase = open ("Frase prueba.txt")
+    frase = "Dios creó a todos los hombres. Samuel Colt los hizo iguales."
     car = len(frase)
     ingreso = input ()
     diferencias = 0
@@ -7,4 +7,5 @@ class comparador:
     for i in range(car):
         if frase[i] != ingreso[i]:
             diferencias= diferencias + 1
-    print (diferencias)
+    porcentaje = (diferencias*100)/car
+    print (porcentaje, "%")
