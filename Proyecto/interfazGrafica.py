@@ -31,8 +31,8 @@ class AreaEntradaTexto:
     color = (0, 0, 0)
     posX = 0
     posY = 0
-    alto = 0
     ancho = 0
+    alto = 0
 
     def __init__(self, color, posX, posY, ancho, alto):
         self.color = color
@@ -41,6 +41,19 @@ class AreaEntradaTexto:
         self.ancho = ancho
         self.alto = alto
 
+class Texto:
+    texto = ""
+    color = (0, 0, 0)
+    posX = 0
+    posY = 0
+    font = ""
+
+    def __init__(self, texto, color, posX, posY, font):
+        self.texto = texto
+        self.color = color
+        self.posX = posX
+        self.posY = posY
+        self.font = font
 
 class Jugador():
     skin = ""

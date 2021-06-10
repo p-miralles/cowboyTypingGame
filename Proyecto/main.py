@@ -32,16 +32,26 @@ class PantallaJuego:
 
     areaEntrada = interfazGrafica.AreaEntradaTexto((191, 146, 42), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
     areaEntradaRect = pygame.Rect(areaEntrada.posX, areaEntrada.posY, areaEntrada.ancho, areaEntrada.alto)
-    font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25)
-    txtIngresado = ""
-    frases = ["Hola"]
+
+
+    txtIngresado = interfazGrafica.Texto("", (0, 0, 0), 4, 410, pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25))
+
+    posXInput = 5
 
     def ingresoDatos(self):
-        pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect)
+        pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect) #Area de entrada
         pygame.draw.rect(self.pantalla, (255, 255, 255), pygame.Rect(self.areaEntrada.posX, self.areaEntrada.posY, self.areaEntradaRect.width, self.areaEntradaRect.height//2))
-        input = self.font_txtIngresado.render(self.txtIngresado, True, (0, 0, 0))
-        self.pantalla.blit(input, (5, 400))
-        pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(input.get_width() + 5, 405, 5, 20))
+
+        ingresadoSurface = self.txtIngresado.font.render(self.txtIngresado.texto, True, self.txtIngresado.color)
+        if ingresadoSurface.get_width() > self.pantalla.get_width():
+            self.txtIngresado.posX =- 10
+        else:
+            self.txtIngresado.posX =+ 10
+        self.pantalla.blit(ingresadoSurface, (self.txtIngresado.posX, 405))
+        pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(ingresadoSurface.get_width() + 5, 410, 5, 20))
+
+        print("tamaño input: "+str(ingresadoSurface.get_width()))
+        print("tamaño pantalla: " + str(self.pantalla.get_width()))
 
     def cuentaRegresiva(self):
         if self.n >= 0:
@@ -86,6 +96,7 @@ def main():
     DISPARA_JDOS = pygame.USEREVENT + 2
 
     pygame.display.set_caption("Cowboy type!")
+    pygame.key.set_repeat(100, 100)
     reloj = pygame.time.Clock()
     mostrar_menu = True
 
@@ -104,15 +115,15 @@ def main():
         for event in pygame.event.get():
             if mostrar_menu:
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.BTN_EMPEZAR, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
-                    SONIDO_DISPARO1.play()
+                    #SONIDO_DISPARO1.play()
                     mostrar_menu = False
             if event.type == pygame.QUIT:
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
-                    pantalla_j.txtIngresado = pantalla_j.txtIngresado[:-1]
+                    pantalla_j.txtIngresado.texto = pantalla_j.txtIngresado.texto[:-1]
                 else:
-                    pantalla_j.txtIngresado += event.unicode
+                    pantalla_j.txtIngresado.texto += event.unicode
             if event.type == DISPARA_JUNO:
                 SONIDO_DISPARO2.play()
             if event.type == DISPARA_JDOS:
