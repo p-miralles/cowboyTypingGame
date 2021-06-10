@@ -33,14 +33,25 @@ class PantallaJuego:
     areaEntrada = interfazGrafica.AreaEntradaTexto((191, 146, 42), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
     areaEntradaRect = pygame.Rect(areaEntrada.posX, areaEntrada.posY, areaEntrada.ancho, areaEntrada.alto)
     font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25)
+    font_txtIngresado2 = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25)
+
     txtIngresado = ""
+    txtIngresado2 = ""
+    txtIngresadoFinal = ""
     frases = ["Hola"]
 
+
+
     def ingresoDatos(self):
+
         pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect)
         pygame.draw.rect(self.pantalla, (255, 255, 255), pygame.Rect(self.areaEntrada.posX, self.areaEntrada.posY, self.areaEntradaRect.width, self.areaEntradaRect.height//2))
+
         input = self.font_txtIngresado.render(self.txtIngresado, True, (0, 0, 0))
+        input2 = self.font_txtIngresado.render(self.txtIngresado2, True, (0, 0, 0))
         self.pantalla.blit(input, (5, 400))
+        self.pantalla.blit(input2, (5, 425))
+
         pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(input.get_width() + 5, 405, 5, 20))
 
     def cuentaRegresiva(self):
@@ -112,7 +123,11 @@ def main():
                 if event.key == pygame.K_BACKSPACE:
                     pantalla_j.txtIngresado = pantalla_j.txtIngresado[:-1]
                 else:
-                    pantalla_j.txtIngresado += event.unicode
+                    #print(len(pantalla_j.txtIngresado))
+                    if len(pantalla_j.txtIngresado) < 80:
+                        pantalla_j.txtIngresado += event.unicode
+                    else: pantalla_j.txtIngresado2 += event.unicode
+                    pantalla_j.txtIngresadoFinal = pantalla_j.txtIngresado + pantalla_j.txtIngresado2                    
             if event.type == DISPARA_JUNO:
                 SONIDO_DISPARO2.play()
             if event.type == DISPARA_JDOS:
