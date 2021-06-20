@@ -33,25 +33,17 @@ class PantallaJuego:
     areaEntrada = interfazGrafica.AreaEntradaTexto((191, 146, 42), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
     areaEntradaRect = pygame.Rect(areaEntrada.posX, areaEntrada.posY, areaEntrada.ancho, areaEntrada.alto)
 
-
-    txtIngresado = interfazGrafica.Texto("", (0, 0, 0), 4, 410, pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25))
-
-    posXInput = 5
+    txtIngresado = interfazGrafica.Texto("", (0, 0, 0), 4, 410)
 
     def ingresoDatos(self):
         pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect) #Area de entrada
         pygame.draw.rect(self.pantalla, (255, 255, 255), pygame.Rect(self.areaEntrada.posX, self.areaEntrada.posY, self.areaEntradaRect.width, self.areaEntradaRect.height//2))
 
-        ingresadoSurface = self.txtIngresado.font.render(self.txtIngresado.texto, True, self.txtIngresado.color)
-        if ingresadoSurface.get_width() > self.pantalla.get_width():
-            self.txtIngresado.posX =- 10
-        else:
-            self.txtIngresado.posX =+ 10
-        self.pantalla.blit(ingresadoSurface, (self.txtIngresado.posX, 405))
-        pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(ingresadoSurface.get_width() + 5, 410, 5, 20))
+        self.txtIngresado.mostrarTexto(self.pantalla)
 
-        print("tamaño input: "+str(ingresadoSurface.get_width()))
-        print("tamaño pantalla: " + str(self.pantalla.get_width()))
+        print("tamaño input: "+str(self.txtIngresado.surface.get_width()))
+        print("texto: "+self.txtIngresado.texto)
+        print("tamaño pantalla: "+str(self.pantalla.get_width()))
 
     def cuentaRegresiva(self):
         if self.n >= 0:
@@ -113,12 +105,12 @@ def main():
 
         #Registro de eventos de usuario
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
             if mostrar_menu:
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.BTN_EMPEZAR, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     #SONIDO_DISPARO1.play()
                     mostrar_menu = False
-            if event.type == pygame.QUIT:
-                quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     pantalla_j.txtIngresado.texto = pantalla_j.txtIngresado.texto[:-1]

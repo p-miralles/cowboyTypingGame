@@ -46,14 +46,24 @@ class Texto:
     color = (0, 0, 0)
     posX = 0
     posY = 0
-    font = ""
+    font = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25)
+    surface = font.render(texto, True, color)
 
-    def __init__(self, texto, color, posX, posY, font):
+    def __init__(self, texto, color, posX, posY):
         self.texto = texto
         self.color = color
         self.posX = posX
         self.posY = posY
-        self.font = font
+
+    def mostrarTexto(self, pantalla):
+        self.surface = self.font.render(self.texto, True, self.color)
+        pantalla.blit(self.surface, (self.posX, self.posY))
+        if self.surface.get_width() > pantalla.get_width():
+            self.posX = -20
+        else:
+            self.posX = +20
+        pygame.draw.rect(pantalla, (0, 0, 0), pygame.Rect(self.surface.get_width() + 5, 410, 5, 20))
+
 
 class Jugador():
     skin = ""
