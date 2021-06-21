@@ -7,15 +7,15 @@ class Boton:
     color = (0, 0, 0)
     posX, posY = (0, 0)
     ancho, alto = (0, 0)
-    texto = ""
+    txt = ""
     rect = pygame.rect.Rect(posX, posY, ancho, alto)
 
-    def __init__(self, posX, posY, ancho, alto, texto):
+    def __init__(self, posX, posY, ancho, alto, txt):
         self.posX = posX
         self.posY = posY
         self.ancho = ancho
         self.alto = alto
-        self.texto = texto
+        self.txt = txt
         self.rect = pygame.rect.Rect(posX, posY, ancho, alto)
 
     def colisionBotones(self, mouse):
@@ -26,6 +26,10 @@ class Boton:
             self.color = (255, 255, 255)  # Blanco
             return False
 
+    def mostrarBoton(self, pantalla):
+        pygame.draw.rect(pantalla, self.color, self.rect)
+        surface = self.font.render(self.txt, True, (183, 155, 106))
+        pantalla.blit(surface, (self.rect.centerx-surface.get_width()//2 , self.rect.centery-surface.get_height()//2))
 
 class AreaEntradaTexto:
     color = (0, 0, 0)
