@@ -101,23 +101,23 @@ class PantallaJuego:
         pygame.draw.rect(self.pantalla, (60, 40, 8), pygame.Rect(0, self.ALTOPANTALLA // 1.67, self.ANCHOPANTALLA, 5))
         texto_titulo = self.font_cuenta_regresiva.render("Resultados:", True, (90, 50, 10))
         self.pantalla.blit(texto_titulo,(self.ANCHOPANTALLA/2.7, self.ALTOPANTALLA/3.8))
-        texto_frase = self.font_txtIngresado.render("Puntaje: "+str(round(puntaje, 2))+"pts", True, (90, 50, 10))
-        texto_frase2 = self.font_txtIngresado.render("Presición: "+str(round(presicion, 2))+"%", True, (90, 50, 10))
-        self.pantalla.blit(texto_frase, (15, self.ALTOPANTALLA // 2.5))
-        self.pantalla.blit(texto_frase2, (700, self.ALTOPANTALLA // 2.5))
+        texto_punt = self.font_txtIngresado.render("Puntaje: "+str(round(puntaje, 2))+"pts", True, (90, 50, 10))
+        texto_pres = self.font_txtIngresado.render("Presición: "+str(round(presicion, 2))+"%", True, (90, 50, 10))
+        self.pantalla.blit(texto_punt, (15, self.ALTOPANTALLA // 2.5))
+        self.pantalla.blit(texto_pres, (700, self.ALTOPANTALLA // 2.5))
         texto_salida = self.font_txtIngresado.render("Presione ESC para salir.", True, (90, 50, 10))
         self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
         pygame.display.update()
 
 
     def pantallaResultadosOnline(self, presicion):
-        print ("pantallaResultados")
         pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
-        pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 3, self.ANCHOPANTALLA, 400))
-        texto_titulo = self.font_cuenta_regresiva.render("Resultados:", True, (90, 50, 10))
-        self.pantalla.blit(texto_titulo,(self.ANCHOPANTALLA/2.7, self.ALTOPANTALLA/3.8))
-        texto_frase2 = self.font_txtIngresado.render("Presición: "+str(presicion)+"%", True, (255, 255, 255))
-        elf.pantalla.blit(texto_frase2, (700, self.ALTOPANTALLA // 2.5))
+        texto_titulo = self.font_cuenta_regresiva.render("Ganador: "+ "Jugador", True, (90, 50, 10))
+        self.pantalla.blit(texto_titulo,(self.ANCHOPANTALLA/3.4, self.ALTOPANTALLA/3.8))
+        texto_pres = self.font_txtIngresado.render("Presición: "+str(presicion)+"%", True, (90, 50, 10))
+        texto_tiempo = self.font_txtIngresado.render("Tiempo: ", True, (90, 50, 10))
+        self.pantalla.blit(texto_pres, (375, self.ALTOPANTALLA // 2.5))
+        self.pantalla.blit(texto_tiempo, (375, self.ALTOPANTALLA // 2.2))
         pygame.display.update()
 
     def mostrarJuego(self, juno, jdos):
@@ -164,7 +164,8 @@ def main():
         if mostrar_menu:
             MenuPrincipal.mostrarMenu(menu_p)
         elif finaliza:
-            pantalla_j.pantallaResultados(pantalla_j, puntaje, pres)
+            #pantalla_j.pantallaResultados(pantalla_j, puntaje, pres)
+            pantalla_j.pantallaResultadosOnline(pantalla_j, pres)
         else:
             PantallaJuego.mostrarJuego(pantalla_j, JUNORect, JDOSRect)
 

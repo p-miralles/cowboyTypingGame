@@ -5,11 +5,9 @@ class Comparadores:
     def compararOnline(numfrase, txtIngresadoFinal):
         with open(os.path.join('Assets', 'Frases.txt')) as frase:
             frase = frase.readlines()[numfrase]
-        print(frase)
         car = len(frase)
         ingreso = txtIngresadoFinal
         diferencias = 0
-        print(ingreso)
         for i in range(car - 1):
             # Si el ingreso es incorrecto en cuanto a la cantidad de carácteres sale Out of range.
             if frase[i] != ingreso[i]:
