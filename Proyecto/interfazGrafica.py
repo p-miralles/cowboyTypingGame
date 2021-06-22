@@ -3,6 +3,22 @@ from pygame import Rect
 import os
 pygame.font.init()
 
+class Linea:
+    color = (0,0,0)
+    startX = 0
+    startY = 0
+    endX = 0
+    endY = 0
+    ancho = 0
+
+    def __init__(self, color, startX, startY, endX, endY, ancho):
+        self.color = color
+        self.startX = startX
+        self.startY = startY
+        self.endX = endX
+        self.endY = endY
+        self.ancho = ancho
+
 class Boton:
     color = (106, 68, 1)
     colortxt = (0, 0, 0)
@@ -44,6 +60,10 @@ class AreaEntradaTexto:
     posY = 0
     ancho = 0
     alto = 0
+    txt=""
+    rect = Rect(posX, posY, ancho, alto)
+    font = pygame.font.SysFont("chilanka", 18)
+    surface = font.render(txt, True, (0,0,0))
 
     def __init__(self, color, posX, posY, ancho, alto):
         self.color = color
@@ -51,6 +71,7 @@ class AreaEntradaTexto:
         self.posY = posY
         self.ancho = ancho
         self.alto = alto
+        self.rect = Rect(posX, posY, ancho, alto)
 
 class Texto:
     texto = ""
