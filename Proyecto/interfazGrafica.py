@@ -1,34 +1,41 @@
 import pygame
+from pygame import Rect
 import os
 pygame.font.init()
 
 class Boton:
-    font = pygame.font.SysFont('chilanka', 20)
-    color = (0, 0, 0)
+    color = (106, 68, 1)
+    colortxt = (0, 0, 0)
     posX, posY = (0, 0)
     ancho, alto = (0, 0)
     txt = ""
-    rect = pygame.rect.Rect(posX, posY, ancho, alto)
+    tamanoFont = 20
+    font = pygame.font.SysFont('chilanka', tamanoFont)
+    rect = Rect(posX, posY, ancho, alto)
 
-    def __init__(self, posX, posY, ancho, alto, txt):
+    def __init__(self, posX, posY, ancho, alto, txt, tamanoFont):
         self.posX = posX
         self.posY = posY
         self.ancho = ancho
         self.alto = alto
         self.txt = txt
-        self.rect = pygame.rect.Rect(posX, posY, ancho, alto)
+        self.tamanoFont = tamanoFont
+        self.font = pygame.font.SysFont('chilanka', tamanoFont)
+        self.rect = Rect(posX, posY, ancho, alto)
 
     def colisionBotones(self, mouse):
         if self.rect.collidepoint(mouse):
-            self.color = (0, 0, 0)  # Negro
+            self.color = (97, 97, 97)  # Gris
+            self.colortxt = (0,0,0)
             return True
         else:
-            self.color = (255, 255, 255)  # Blanco
+            self.color = (106, 68, 1)  # Marrón Claro
+            self.colortxt = (218, 218, 218)
             return False
 
     def mostrarBoton(self, pantalla):
         pygame.draw.rect(pantalla, self.color, self.rect)
-        surface = self.font.render(self.txt, True, (183, 155, 106))
+        surface = self.font.render(self.txt, True, self.colortxt)
         pantalla.blit(surface, (self.rect.centerx-surface.get_width()//2 , self.rect.centery-surface.get_height()//2))
 
 class AreaEntradaTexto:
