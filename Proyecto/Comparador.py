@@ -1,9 +1,8 @@
 import os
-import main
 
 class Comparadores:
     # Comparador para modo 2 jugadores
-    def compararOnline(numfrase, txtIngresadoFinal, cantborrados):
+    def compararOnline(numfrase, txtIngresadoFinal):
         with open(os.path.join('Assets', 'Frases.txt')) as frase:
             frase = frase.readlines()[numfrase]
         print(frase)
@@ -16,19 +15,14 @@ class Comparadores:
             if frase[i] != ingreso[i]:
                 diferencias = diferencias + 1
         porcentaje = (diferencias * 100) / car
-        print(porcentaje, "%")
         pres = (100 - (porcentaje))
-        print(pres)
+        return pres
     # Comparador para modo práctica
     def compararSolo(numfrase, txtIngresadoFinal, cantborrados):
         with open(os.path.join('Assets', 'Frases.txt')) as frase:
             frase = frase.readlines()[numfrase]
         car = len(frase) - 1
         ingreso = txtIngresadoFinal
-        print (frase)
-        print (ingreso)
-        print (len(ingreso))
-        print (car)
         diferencias = 0
         vecesBS=cantborrados
         if len(ingreso)< car:
@@ -54,6 +48,4 @@ class Comparadores:
         porcentaje = (diferencias * 100) / car
         pres = (100 - porcentaje)
         puntaje=(100 - (porcentaje + vecesBS))
-        print (pres)
-        print (puntaje)
         return puntaje, pres
