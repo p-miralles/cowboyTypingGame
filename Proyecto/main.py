@@ -1,6 +1,6 @@
 import pygame
 import os
-import math
+import time
 
 import interfazGrafica
 import Comparador
@@ -93,9 +93,8 @@ class PantallaJuego:
         pygame.display.update()
         pygame.time.wait(1000)
 
-    def pantallaResultados(self, puntaje, presicion):
-        print (puntaje)
-        print(presicion)
+    def pantallaResultados(self, puntaje, presicion, tiempo_fin, tiempo_inicio):
+        tiempo=tiempo_fin-tiempo_inicio
         pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
         pygame.draw.rect(self.pantalla, (60, 40, 8), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 5))
         pygame.draw.rect(self.pantalla, (60, 40, 8), pygame.Rect(0, self.ALTOPANTALLA // 1.67, self.ANCHOPANTALLA, 5))
@@ -103,21 +102,26 @@ class PantallaJuego:
         self.pantalla.blit(texto_titulo,(self.ANCHOPANTALLA/2.7, self.ALTOPANTALLA/3.8))
         texto_punt = self.font_txtIngresado.render("Puntaje: "+str(round(puntaje, 2))+"pts", True, (90, 50, 10))
         texto_pres = self.font_txtIngresado.render("Presición: "+str(round(presicion, 2))+"%", True, (90, 50, 10))
+        texto_tiempo= self.font_txtIngresado.render("Tiempo: "+str(round(tiempo, 2))+" Secs", True, (90, 50, 10))
         self.pantalla.blit(texto_punt, (15, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_pres, (700, self.ALTOPANTALLA // 2.5))
+        self.pantalla.blit(texto_tiempo, (370, self.ALTOPANTALLA // 2.5))
         texto_salida = self.font_txtIngresado.render("Presione ESC para salir.", True, (90, 50, 10))
         self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
         pygame.display.update()
 
 
-    def pantallaResultadosOnline(self, presicion):
+    def pantallaResultadosOnline(self, presicion, tiempo_fin, tiempo_inicio):
+        tiempo = tiempo_fin - tiempo_inicio
         pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
         texto_titulo = self.font_cuenta_regresiva.render("Ganador: "+ "Jugador", True, (90, 50, 10))
         self.pantalla.blit(texto_titulo,(self.ANCHOPANTALLA/3.4, self.ALTOPANTALLA/3.8))
         texto_pres = self.font_txtIngresado.render("Presición: "+str(presicion)+"%", True, (90, 50, 10))
-        texto_tiempo = self.font_txtIngresado.render("Tiempo: ", True, (90, 50, 10))
+        texto_tiempo = self.font_txtIngresado.render("Tiempo: "+str(round(tiempo, 2)), True, (90, 50, 10))
         self.pantalla.blit(texto_pres, (375, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_tiempo, (375, self.ALTOPANTALLA // 2.2))
+        texto_salida = self.font_txtIngresado.render("Presione ESC para salir.", True, (90, 50, 10))
+        self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
         pygame.display.update()
 
     def mostrarJuego(self, juno, jdos):
@@ -165,7 +169,7 @@ def main():
             MenuPrincipal.mostrarMenu(menu_p)
         elif finaliza:
             #pantalla_j.pantallaResultados(pantalla_j, puntaje, pres)
-            pantalla_j.pantallaResultadosOnline(pantalla_j, pres)
+            pantalla_j.pantallaResultados(pantalla_j, puntaje, pres, tiempo_fin, tiempo_inicio)
         else:
             PantallaJuego.mostrarJuego(pantalla_j, JUNORect, JDOSRect)
 
@@ -176,6 +180,7 @@ def main():
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.BTN_EMPEZAR, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     #SONIDO_DISPARO1.play()
                     mostrar_menu = False
+                    tiempo_inicio= (time.time()+3)
             if event.type == pygame.QUIT:
                 quit()
             if event.type == pygame.KEYDOWN:
@@ -198,8 +203,8 @@ def main():
                     if event.key == pygame.K_RETURN:
                         numfrase=1
                         puntaje, pres = (Comparador.Comparadores.compararSolo(numfrase, pantalla_j.txtIngresadoFinal, pantalla_j.cantborrados))
-                        print (puntaje, pres)
                         finaliza = True
+                        tiempo_fin = time.time()
             if event.type == DISPARA_JUNO:
                 SONIDO_DISPARO2.play()
             if event.type == DISPARA_JDOS:
