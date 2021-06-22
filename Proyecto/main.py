@@ -168,7 +168,6 @@ def main():
         if mostrar_menu:
             MenuPrincipal.mostrarMenu(menu_p)
         elif finaliza:
-            #pantalla_j.pantallaResultados(pantalla_j, puntaje, pres)
             pantalla_j.pantallaResultados(pantalla_j, puntaje, pres, tiempo_fin, tiempo_inicio)
         else:
             PantallaJuego.mostrarJuego(pantalla_j, JUNORect, JDOSRect)
@@ -180,7 +179,7 @@ def main():
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.BTN_EMPEZAR, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     #SONIDO_DISPARO1.play()
                     mostrar_menu = False
-                    tiempo_inicio= (time.time()+3)
+                    tiempo_inicio= (time.time()+4)
             if event.type == pygame.QUIT:
                 quit()
             if event.type == pygame.KEYDOWN:
