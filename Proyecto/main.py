@@ -25,8 +25,9 @@ class MenuOnline:
     btn_unirse5 = interfazGrafica.Boton(ANCHOPANTALLA//2+175,ALTOPANTALLA//2+120, 80, 40, "SERVER 5", 15)
 
     btn_listo = interfazGrafica.Boton(ANCHOPANTALLA-110, 430, 100, 60, "LISTO", 20)
-    marcador_listo = interfazGrafica.Linea((90,0,0), ANCHOPANTALLA//2-100, ALTOPANTALLA//2+130, ANCHOPANTALLA//2-50, ALTOPANTALLA//2+130,2)
+    marcador_listo = interfazGrafica.Linea((90,0,0), btn_listo.rect.centerx+49, btn_listo.rect.centery+20, btn_listo.rect.centerx-50, btn_listo.rect.centery+20, 7)
     btn_empezar = interfazGrafica.Boton(ANCHOPANTALLA-110, 350, 100, 50, "EMPEZAR", 20)
+    listo = False
 
     def mostrarMenuOnline(self):
         self.pantalla_menu_online.fill(self.COLOR_FONDO)
@@ -60,13 +61,19 @@ class MenuOnline:
         pygame.display.update()
 
     def hostearSala(self):
+        self.pantalla_menu_online = pygame.display.set_mode((self.ANCHOPANTALLA, self.ALTOPANTALLA))
         self.pantalla_menu_online.fill(self.COLOR_FONDO)
         pygame.draw.rect(self.pantalla_menu_online, (255, 160, 70), Rect(0,0,self.ANCHOPANTALLA, 90))
         self.pantalla_menu_online.blit(self.font_titulo.render("Servidor: " + self.entradaNombreSala.txt, True, (0, 0, 0)), (10, 10))
         self.pantalla_menu_online.blit(self.font_cuerpo.render("Esperando al inicio de partida", True, (80, 0, 0)), (self.ANCHOPANTALLA//2-180, self.ALTOPANTALLA//2))
         interfazGrafica.Boton.mostrarBoton(self.btn_volver, self.pantalla_menu_online)
         interfazGrafica.Boton.mostrarBoton(self.btn_listo, self.pantalla_menu_online)
-        pygame.draw.line(self.pantalla_menu_online, self.marcador_listo.color, (self.marcador_listo.startX, self.marcador_listo.endX), (self.marcador_listo.endX, self.marcador_listo.endY))
+        if self.listo:
+            MenuOnline.marcador_listo.color = (0, 90, 0)
+        else:
+            MenuOnline.marcador_listo.color = (90, 0, 0)
+        pygame.draw.line(self.pantalla_menu_online, self.marcador_listo.color, (self.marcador_listo.startX, self.marcador_listo.startY),
+                         (self.marcador_listo.endX, self.marcador_listo.endY), self.marcador_listo.ancho)
         interfazGrafica.Boton.mostrarBoton(self.btn_empezar, self.pantalla_menu_online)
         pygame.display.update()
 
@@ -223,18 +230,27 @@ def main():
                         print("Hostear servidor")
                         mostrar_menu_online = False
                         mostrar_sala = True
-                        MenuOnline.hostearSala(MenuOnline)
                     else:
                         print("El nombre del server no puede estar vacío!")
                 if interfazGrafica.Boton.colisionBotones(MenuOnline.btn_unirse1, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     print("Unirse a servidor UNO")
                 if interfazGrafica.Boton.colisionBotones(MenuOnline.btn_volver, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
+                    MenuOnline.entradaNombreSala.txt = ""
                     mostrar_menu_online = False
+                    mostrar_sala = False
                     mostrar_menu = True
             if mostrar_sala:
+                MenuOnline.hostearSala(MenuOnline)
                 if interfazGrafica.Boton.colisionBotones(MenuOnline.btn_volver, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
-                    mostrar_menu_online = True
+                    MenuOnline.listo = False
                     mostrar_sala = False
+                    mostrar_menu_online = True
+                if interfazGrafica.Boton.colisionBotones(MenuOnline.btn_listo, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
+                    if MenuOnline.listo==False:
+                        MenuOnline.listo = True
+                    elif MenuOnline.listo:
+                        MenuOnline.listo = False
+
             if mostrar_juego:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE and pantalla_j.input2.get_width()==1:
