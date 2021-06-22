@@ -14,3 +14,7 @@
 
 # Tema
 Juego de tipeo al estilo duelo Cowboy
+E es un juego multijugador en el que dos jugadores se enfrentan en desafíos en los que se pone a prueba la velocidad y precisión en el tipeo por teclado.
+El primer jugador en terminar de escribir una determinada frase será el primero en disparar, pero su efectividad en dicho disparo va a estar ligado a que tan correcta fue su escritura. 
+El primero en conectar un disparo a su oponente será el ganador. El juego contará con varios avatares a elección del jugador.
+El lenguaje que utilizaremos será Python con la librería Pygame, todo esto trabajado sobre el entorno Pycharm Community, el cual es gratuito y de código abierto.
