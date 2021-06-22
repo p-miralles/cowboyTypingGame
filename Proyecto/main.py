@@ -82,6 +82,7 @@ class MenuPrincipal:
     pantalla_menu = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
     FONDO = pygame.image.load(os.path.join('Assets', 'menu_placeholder.jpg'))
     COLOR_FONDO = (183, 155, 106)
+    font_cuerpo = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 32)
     btn_solo = interfazGrafica.Boton(ANCHOPANTALLA // 2 - 45, ALTOPANTALLA // 2, 120, 60, "SOLO", 20)
     btn_online = interfazGrafica.Boton(ANCHOPANTALLA//2-45, ALTOPANTALLA//3, 120, 60, "ONLINE", 20)
 
@@ -90,6 +91,8 @@ class MenuPrincipal:
 
         interfazGrafica.Boton.mostrarBoton(self.btn_online, self.pantalla_menu)
         interfazGrafica.Boton.mostrarBoton(self.btn_solo, self.pantalla_menu)
+        self.pantalla_menu.blit(self.font_cuerpo.render("Presione 'ESC' para salir en cualquier momento", True,
+                                                        (250, 30, 50)),(self.ANCHOPANTALLA//2-310, self.ALTOPANTALLA-150))
 
         ###
         pygame.display.update()
@@ -250,7 +253,6 @@ def main():
                         MenuOnline.listo = True
                     elif MenuOnline.listo:
                         MenuOnline.listo = False
-
             if mostrar_juego:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE and pantalla_j.input2.get_width()==1:
@@ -268,21 +270,11 @@ def main():
                     SONIDO_DISPARO1.play()
                 if event.type == DISPARA_JDOS:
                     SONIDO_DISPARO2.play()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    pantalla_j.txtIngresado = pantalla_j.txtIngresado[:-1]
-                else:
-                    #print(len(pantalla_j.txtIngresado))
-                    if len(pantalla_j.txtIngresado) < 80:
-                        pantalla_j.txtIngresado += event.unicode
-                    else: pantalla_j.txtIngresado2 += event.unicode
-                    pantalla_j.txtIngresadoFinal = pantalla_j.txtIngresado + pantalla_j.txtIngresado2                    
             if event.type == DISPARA_JUNO:
                 SONIDO_DISPARO2.play()
             if event.type == DISPARA_JDOS:
                 SONIDO_DISPARO2.play()
-
+        ######
         reloj.tick(FPS)
 if __name__ == "__main__":
     main()
