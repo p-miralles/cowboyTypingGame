@@ -1,12 +1,16 @@
+import random
+
 import pygame
 from pygame import Rect
 import os
+import time
 
 import interfazGrafica
+import Comparador
 
 pygame.mixer.init()
 pygame.font.init()
-
+numfrase= random.randint(0, 12)
 class MenuOnline:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla_menu_online = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
@@ -110,7 +114,7 @@ class PantallaJuego:
 
     font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
     font_txtIngresado2 = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
-
+    font_frasemostrada = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 22)
 
     txtIngresado = ""
     txtIngresado2 = ""
@@ -119,10 +123,34 @@ class PantallaJuego:
 
     input = font_txtIngresado.render(txtIngresado, True, (0, 0, 0))
     input2 = font_txtIngresado.render(txtIngresado2, True, (0, 0, 0))
-
+    cantborrados=0
     frases = ["Hola"]
 
-
+    def mostrarFrase(self, numfrase):
+        pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(0, self.ALTOPANTALLA // 3, self.ANCHOPANTALLA, 100))
+        with open(os.path.join('Assets', 'Frases.txt')) as frase:
+            frase = frase.read().splitlines()[numfrase]
+            if len(frase) < 101:
+                texto_frase = self.font_frasemostrada.render(frase, True, (255, 255, 255))
+                self.pantalla.blit(texto_frase, (10, self.ALTOPANTALLA // 2.7))
+            else:
+                if len(frase) < 202:
+                    frasemost = frase[0:101]
+                    frasemost2 = frase[101:202]
+                    texto_frase = self.font_frasemostrada.render(frasemost, True, (255, 255, 255))
+                    texto_frase2 = self.font_frasemostrada.render(frasemost2, True, (255, 255, 255))
+                    self.pantalla.blit(texto_frase, (10, self.ALTOPANTALLA // 2.7))
+                    self.pantalla.blit(texto_frase2, (10, self.ALTOPANTALLA // 2.3))
+                else:
+                    frasemost = frase[0:101]
+                    frasemost2 = frase[101:202]
+                    frasemost3 = frase[202:303]
+                    texto_frase = self.font_frasemostrada.render(frasemost, True, (255, 255, 255))
+                    texto_frase2 = self.font_frasemostrada.render(frasemost2, True, (255, 255, 255))
+                    texto_frase3 = self.font_frasemostrada.render(frasemost3, True, (255, 255, 255))
+                    self.pantalla.blit(texto_frase, (10, self.ALTOPANTALLA // 2.9))
+                    self.pantalla.blit(texto_frase2, (10, self.ALTOPANTALLA // 2.5))
+                    self.pantalla.blit(texto_frase3, (10, self.ALTOPANTALLA // 2.2))
 
     def ingresoDatos(self):
 
@@ -156,6 +184,35 @@ class PantallaJuego:
         pygame.display.update()
         pygame.time.wait(1000)
 
+    def pantallaResultados(self, puntaje, presicion, tiempo_fin, tiempo_inicio):
+        tiempo = tiempo_fin - tiempo_inicio
+        pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
+        pygame.draw.rect(self.pantalla, (60, 40, 8), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 5))
+        pygame.draw.rect(self.pantalla, (60, 40, 8), pygame.Rect(0, self.ALTOPANTALLA // 1.67, self.ANCHOPANTALLA, 5))
+        texto_titulo = self.font_cuenta_regresiva.render("Resultados:", True, (90, 50, 10))
+        self.pantalla.blit(texto_titulo, (self.ANCHOPANTALLA / 2.7, self.ALTOPANTALLA / 3.8))
+        texto_punt = self.font_txtIngresado.render("Puntaje: " + str(round(puntaje, 2)) + "pts", True, (90, 50, 10))
+        texto_pres = self.font_txtIngresado.render("Presición: " + str(round(presicion, 2)) + "%", True, (90, 50, 10))
+        texto_tiempo = self.font_txtIngresado.render("Tiempo: " + str(round(tiempo, 2)) + " Secs", True, (90, 50, 10))
+        self.pantalla.blit(texto_punt, (15, self.ALTOPANTALLA // 2.5))
+        self.pantalla.blit(texto_pres, (700, self.ALTOPANTALLA // 2.5))
+        self.pantalla.blit(texto_tiempo, (370, self.ALTOPANTALLA // 2.5))
+        texto_salida = self.font_txtIngresado.render("Presione ESC para salir.", True, (90, 50, 10))
+        self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
+        pygame.display.update()
+
+    def pantallaResultadosOnline(self, presicion, tiempo_fin, tiempo_inicio):
+        tiempo = tiempo_fin - tiempo_inicio
+        pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
+        texto_titulo = self.font_cuenta_regresiva.render("Ganador: " + "Jugador", True, (90, 50, 10))
+        self.pantalla.blit(texto_titulo, (self.ANCHOPANTALLA / 3.4, self.ALTOPANTALLA / 3.8))
+        texto_pres = self.font_txtIngresado.render("Presición: " + str(presicion) + "%", True, (90, 50, 10))
+        texto_tiempo = self.font_txtIngresado.render("Tiempo: " + str(round(tiempo, 2)), True, (90, 50, 10))
+        self.pantalla.blit(texto_pres, (375, self.ALTOPANTALLA // 2.5))
+        self.pantalla.blit(texto_tiempo, (375, self.ALTOPANTALLA // 2.2))
+        texto_salida = self.font_txtIngresado.render("Presione ESC para salir.", True, (90, 50, 10))
+        self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
+        pygame.display.update()
 
     def mostrarJuego(self, juno, jdos):
         self.pantalla.blit(self.fondo, (0, 0))
@@ -165,8 +222,10 @@ class PantallaJuego:
             self.cuentaRegresiva(self)
         else:
             self.ingresoDatos(self)
+            self.mostrarFrase(self, numfrase)
         ###
         pygame.display.update()
+
 
 def main():
     #Constantes
@@ -194,10 +253,14 @@ def main():
     mostrar_menu_online = False
     mostrar_juego = False
     mostrar_sala = False
+    finaliza = False
 
     #Bucle principal
     while True:
         mouse = pygame.mouse.get_pos()
+        if finaliza:
+            pantalla_j.pantallaResultados(pantalla_j, puntaje, pres, tiempo_fin, tiempo_inicio)
+            mostrar_juego=False
         if mostrar_menu:
             menu_p = MenuPrincipal
             MenuPrincipal.mostrarMenu(menu_p)
@@ -212,11 +275,14 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    quit()
             if mostrar_menu:
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.btn_solo, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     #SONIDO_DISPARO1.play()
                     mostrar_menu = False
+                    tiempo_inicio = (time.time() + 4)
                     mostrar_juego = True
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.btn_online, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     #SONIDO_DISPARO2.play()
@@ -232,6 +298,7 @@ def main():
                     if MenuOnline.entradaNombreSala.txt!="":
                         print("Hostear servidor")
                         mostrar_menu_online = False
+                        tiempo_inicio = (time.time() + 4)
                         mostrar_sala = True
                     else:
                         print("El nombre del server no puede estar vacío!")
@@ -255,10 +322,14 @@ def main():
                         MenuOnline.listo = False
             if mostrar_juego:
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        quit()
                     if event.key == pygame.K_BACKSPACE and pantalla_j.input2.get_width()==1:
                         pantalla_j.txtIngresado = pantalla_j.txtIngresado[:-1]
+                        pantalla_j.cantborrados = pantalla_j.cantborrados + 1
                     elif event.key == pygame.K_BACKSPACE and pantalla_j.input.get_width()>=pantalla_j.pantalla.get_width()-10:
                         pantalla_j.txtIngresado2 = pantalla_j.txtIngresado2[:-1]
+                        pantalla_j.cantborrados = pantalla_j.cantborrados + 1
                     else:
                         if pantalla_j.input.get_width() < pantalla_j.pantalla.get_width()-10:
                             pantalla_j.txtIngresado += event.unicode
@@ -266,6 +337,11 @@ def main():
                             if pantalla_j.input2.get_width()<=pantalla_j.pantalla.get_width()-20:
                                 pantalla_j.txtIngresado2 += event.unicode
                         pantalla_j.txtIngresadoFinal = pantalla_j.txtIngresado + pantalla_j.txtIngresado2
+                    if event.key == pygame.K_RETURN:
+                        puntaje, pres = (Comparador.Comparadores.compararSolo(numfrase, pantalla_j.txtIngresadoFinal, pantalla_j.cantborrados))
+                        finaliza = True
+                        tiempo_fin = time.time()
+
                 if event.type == DISPARA_JUNO:
                     SONIDO_DISPARO1.play()
                 if event.type == DISPARA_JDOS:
