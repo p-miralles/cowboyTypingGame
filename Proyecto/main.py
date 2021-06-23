@@ -1,3 +1,5 @@
+import random
+
 import pygame
 from pygame import Rect
 import os
@@ -8,7 +10,7 @@ import Comparador
 
 pygame.mixer.init()
 pygame.font.init()
-
+numfrase= random.randint(0, 12)
 class MenuOnline:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla_menu_online = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
@@ -112,7 +114,7 @@ class PantallaJuego:
 
     font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
     font_txtIngresado2 = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
-
+    font_frasemostrada = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 22)
 
     txtIngresado = ""
     txtIngresado2 = ""
@@ -129,26 +131,26 @@ class PantallaJuego:
         with open(os.path.join('Assets', 'Frases.txt')) as frase:
             frase = frase.read().splitlines()[numfrase]
             if len(frase) < 101:
-                texto_frase = self.font_txtIngresado.render(frase, True, (255, 255, 255))
-                self.pantalla.blit(texto_frase, (15, self.ALTOPANTALLA // 2.7))
+                texto_frase = self.font_frasemostrada.render(frase, True, (255, 255, 255))
+                self.pantalla.blit(texto_frase, (10, self.ALTOPANTALLA // 2.7))
             else:
                 if len(frase) < 202:
                     frasemost = frase[0:101]
                     frasemost2 = frase[101:202]
-                    texto_frase = self.font_txtIngresado.render(frasemost, True, (255, 255, 255))
-                    texto_frase2 = self.font_txtIngresado.render(frasemost2, True, (255, 255, 255))
-                    self.pantalla.blit(texto_frase, (15, self.ALTOPANTALLA // 2.7))
-                    self.pantalla.blit(texto_frase2, (15, self.ALTOPANTALLA // 2.3))
+                    texto_frase = self.font_frasemostrada.render(frasemost, True, (255, 255, 255))
+                    texto_frase2 = self.font_frasemostrada.render(frasemost2, True, (255, 255, 255))
+                    self.pantalla.blit(texto_frase, (10, self.ALTOPANTALLA // 2.7))
+                    self.pantalla.blit(texto_frase2, (10, self.ALTOPANTALLA // 2.3))
                 else:
                     frasemost = frase[0:101]
                     frasemost2 = frase[101:202]
                     frasemost3 = frase[202:303]
-                    texto_frase = self.font_frase.render(frasemost, True, (255, 255, 255))
-                    texto_frase2 = self.font_frase.render(frasemost2, True, (255, 255, 255))
-                    texto_frase3 = self.font_frase.render(frasemost3, True, (255, 255, 255))
-                    self.pantalla.blit(texto_frase, (15, self.ALTOPANTALLA // 2.9))
-                    self.pantalla.blit(texto_frase2, (15, self.ALTOPANTALLA // 2.5))
-                    self.pantalla.blit(texto_frase3, (15, self.ALTOPANTALLA // 2.2))
+                    texto_frase = self.font_frasemostrada.render(frasemost, True, (255, 255, 255))
+                    texto_frase2 = self.font_frasemostrada.render(frasemost2, True, (255, 255, 255))
+                    texto_frase3 = self.font_frasemostrada.render(frasemost3, True, (255, 255, 255))
+                    self.pantalla.blit(texto_frase, (10, self.ALTOPANTALLA // 2.9))
+                    self.pantalla.blit(texto_frase2, (10, self.ALTOPANTALLA // 2.5))
+                    self.pantalla.blit(texto_frase3, (10, self.ALTOPANTALLA // 2.2))
 
     def ingresoDatos(self):
 
@@ -220,9 +222,10 @@ class PantallaJuego:
             self.cuentaRegresiva(self)
         else:
             self.ingresoDatos(self)
-            self.mostrarFrase(self, 1)
+            self.mostrarFrase(self, numfrase)
         ###
         pygame.display.update()
+
 
 def main():
     #Constantes
@@ -335,7 +338,6 @@ def main():
                                 pantalla_j.txtIngresado2 += event.unicode
                         pantalla_j.txtIngresadoFinal = pantalla_j.txtIngresado + pantalla_j.txtIngresado2
                     if event.key == pygame.K_RETURN:
-                        numfrase = 1
                         puntaje, pres = (Comparador.Comparadores.compararSolo(numfrase, pantalla_j.txtIngresadoFinal, pantalla_j.cantborrados))
                         finaliza = True
                         tiempo_fin = time.time()
