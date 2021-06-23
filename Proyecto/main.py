@@ -1,22 +1,14 @@
 import pygame
-<<<<<<< HEAD
+from pygame import Rect
 import os
 import time
 
 import interfazGrafica
 import Comparador
-=======
-from pygame import Rect
-import os
-
-import interfazGrafica
->>>>>>> Prueba
 
 pygame.mixer.init()
 pygame.font.init()
 
-<<<<<<< HEAD
-=======
 class MenuOnline:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla_menu_online = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
@@ -87,22 +79,11 @@ class MenuOnline:
         interfazGrafica.Boton.mostrarBoton(self.btn_empezar, self.pantalla_menu_online)
         pygame.display.update()
 
->>>>>>> Prueba
 class MenuPrincipal:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla_menu = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
     FONDO = pygame.image.load(os.path.join('Assets', 'menu_placeholder.jpg'))
     COLOR_FONDO = (183, 155, 106)
-<<<<<<< HEAD
-    BTN_EMPEZAR = interfazGrafica.Boton(ANCHOPANTALLA // 2 - 45, ALTOPANTALLA // 2, 120, 60, "EMPEZAR")
-    TXT_BTN_EMPEZAR = BTN_EMPEZAR.font.render(BTN_EMPEZAR.texto, 1, COLOR_FONDO)
-
-    def mostrarMenu(self):
-        self.pantalla_menu.blit(self.FONDO, (0, 0))
-        pygame.draw.rect(self.pantalla_menu, self.BTN_EMPEZAR.color, self.BTN_EMPEZAR.rect)
-        self.pantalla_menu.blit(self.TXT_BTN_EMPEZAR, (
-        self.BTN_EMPEZAR.rect.centerx - self.TXT_BTN_EMPEZAR.get_width() // 2, self.BTN_EMPEZAR.rect.centery - self.TXT_BTN_EMPEZAR.get_height() // 2))
-=======
     font_cuerpo = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 32)
     btn_solo = interfazGrafica.Boton(ANCHOPANTALLA // 2 - 45, ALTOPANTALLA // 2, 120, 60, "SOLO", 20)
     btn_online = interfazGrafica.Boton(ANCHOPANTALLA//2-45, ALTOPANTALLA//3, 120, 60, "ONLINE", 20)
@@ -115,7 +96,6 @@ class MenuPrincipal:
         self.pantalla_menu.blit(self.font_cuerpo.render("Presione 'ESC' para salir en cualquier momento", True,
                                                         (250, 30, 50)),(self.ANCHOPANTALLA//2-310, self.ALTOPANTALLA-150))
 
->>>>>>> Prueba
         ###
         pygame.display.update()
 
@@ -125,66 +105,50 @@ class PantallaJuego:
     fondo = pygame.image.load(os.path.join('Assets', 'fondo_placeholder.jpg'))
 
     font_cuenta_regresiva = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 55)
-<<<<<<< HEAD
-    font_frase = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 20)
-=======
->>>>>>> Prueba
     n = 3
 
     areaEntrada = interfazGrafica.AreaEntradaTexto((191, 146, 42), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
     areaEntradaRect = pygame.Rect(areaEntrada.posX, areaEntrada.posY, areaEntrada.ancho, areaEntrada.alto)
-<<<<<<< HEAD
-    font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25)
-    font_txtIngresado2 = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 25)
-=======
 
     font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
     font_txtIngresado2 = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
 
->>>>>>> Prueba
 
     txtIngresado = ""
     txtIngresado2 = ""
     txtIngresadoFinal = ""
-<<<<<<< HEAD
+
+
+    input = font_txtIngresado.render(txtIngresado, True, (0, 0, 0))
+    input2 = font_txtIngresado.render(txtIngresado2, True, (0, 0, 0))
+    cantborrados=0
     frases = ["Hola"]
-    cantborrados = 0
 
     def mostrarFrase(self, numfrase):
-        pygame.draw.rect(self.pantalla, (0,0,0), pygame.Rect(0, self.ALTOPANTALLA//3, self.ANCHOPANTALLA, 100))
+        pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(0, self.ALTOPANTALLA // 3, self.ANCHOPANTALLA, 100))
         with open(os.path.join('Assets', 'Frases.txt')) as frase:
             frase = frase.read().splitlines()[numfrase]
-            if len(frase)<101:
+            if len(frase) < 101:
                 texto_frase = self.font_txtIngresado.render(frase, True, (255, 255, 255))
                 self.pantalla.blit(texto_frase, (15, self.ALTOPANTALLA // 2.7))
             else:
-                if len(frase)<202:
-                    frasemost=frase[0:101]
-                    frasemost2=frase[101:202]
+                if len(frase) < 202:
+                    frasemost = frase[0:101]
+                    frasemost2 = frase[101:202]
                     texto_frase = self.font_txtIngresado.render(frasemost, True, (255, 255, 255))
                     texto_frase2 = self.font_txtIngresado.render(frasemost2, True, (255, 255, 255))
                     self.pantalla.blit(texto_frase, (15, self.ALTOPANTALLA // 2.7))
                     self.pantalla.blit(texto_frase2, (15, self.ALTOPANTALLA // 2.3))
                 else:
-                    frasemost=frase [0:101]
-                    frasemost2=frase[101:202]
-                    frasemost3=frase[202:303]
+                    frasemost = frase[0:101]
+                    frasemost2 = frase[101:202]
+                    frasemost3 = frase[202:303]
                     texto_frase = self.font_frase.render(frasemost, True, (255, 255, 255))
                     texto_frase2 = self.font_frase.render(frasemost2, True, (255, 255, 255))
                     texto_frase3 = self.font_frase.render(frasemost3, True, (255, 255, 255))
                     self.pantalla.blit(texto_frase, (15, self.ALTOPANTALLA // 2.9))
                     self.pantalla.blit(texto_frase2, (15, self.ALTOPANTALLA // 2.5))
                     self.pantalla.blit(texto_frase3, (15, self.ALTOPANTALLA // 2.2))
-=======
-
-
-    input = font_txtIngresado.render(txtIngresado, True, (0, 0, 0))
-    input2 = font_txtIngresado.render(txtIngresado2, True, (0, 0, 0))
-
-    frases = ["Hola"]
-
-
->>>>>>> Prueba
 
     def ingresoDatos(self):
 
@@ -193,11 +157,6 @@ class PantallaJuego:
 
         input = self.font_txtIngresado.render(self.txtIngresado, True, (0, 0, 0))
         input2 = self.font_txtIngresado.render(self.txtIngresado2, True, (0, 0, 0))
-<<<<<<< HEAD
-        self.pantalla.blit(input, (5, 400))
-        self.pantalla.blit(input2, (5, 425))
-
-=======
 
         self.input = input
         self.input2 = input2
@@ -210,7 +169,6 @@ class PantallaJuego:
             pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(input2.get_width() + 5, 430, 5, 20))
 
 
->>>>>>> Prueba
     def cuentaRegresiva(self):
         if self.n >= 0:
             if self.n == 0:
@@ -224,17 +182,16 @@ class PantallaJuego:
         pygame.display.update()
         pygame.time.wait(1000)
 
-<<<<<<< HEAD
     def pantallaResultados(self, puntaje, presicion, tiempo_fin, tiempo_inicio):
-        tiempo=tiempo_fin-tiempo_inicio
+        tiempo = tiempo_fin - tiempo_inicio
         pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
         pygame.draw.rect(self.pantalla, (60, 40, 8), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 5))
         pygame.draw.rect(self.pantalla, (60, 40, 8), pygame.Rect(0, self.ALTOPANTALLA // 1.67, self.ANCHOPANTALLA, 5))
         texto_titulo = self.font_cuenta_regresiva.render("Resultados:", True, (90, 50, 10))
-        self.pantalla.blit(texto_titulo,(self.ANCHOPANTALLA/2.7, self.ALTOPANTALLA/3.8))
-        texto_punt = self.font_txtIngresado.render("Puntaje: "+str(round(puntaje, 2))+"pts", True, (90, 50, 10))
-        texto_pres = self.font_txtIngresado.render("Presición: "+str(round(presicion, 2))+"%", True, (90, 50, 10))
-        texto_tiempo= self.font_txtIngresado.render("Tiempo: "+str(round(tiempo, 2))+" Secs", True, (90, 50, 10))
+        self.pantalla.blit(texto_titulo, (self.ANCHOPANTALLA / 2.7, self.ALTOPANTALLA / 3.8))
+        texto_punt = self.font_txtIngresado.render("Puntaje: " + str(round(puntaje, 2)) + "pts", True, (90, 50, 10))
+        texto_pres = self.font_txtIngresado.render("Presición: " + str(round(presicion, 2)) + "%", True, (90, 50, 10))
+        texto_tiempo = self.font_txtIngresado.render("Tiempo: " + str(round(tiempo, 2)) + " Secs", True, (90, 50, 10))
         self.pantalla.blit(texto_punt, (15, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_pres, (700, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_tiempo, (370, self.ALTOPANTALLA // 2.5))
@@ -242,21 +199,18 @@ class PantallaJuego:
         self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
         pygame.display.update()
 
-
     def pantallaResultadosOnline(self, presicion, tiempo_fin, tiempo_inicio):
         tiempo = tiempo_fin - tiempo_inicio
         pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
-        texto_titulo = self.font_cuenta_regresiva.render("Ganador: "+ "Jugador", True, (90, 50, 10))
-        self.pantalla.blit(texto_titulo,(self.ANCHOPANTALLA/3.4, self.ALTOPANTALLA/3.8))
-        texto_pres = self.font_txtIngresado.render("Presición: "+str(presicion)+"%", True, (90, 50, 10))
-        texto_tiempo = self.font_txtIngresado.render("Tiempo: "+str(round(tiempo, 2)), True, (90, 50, 10))
+        texto_titulo = self.font_cuenta_regresiva.render("Ganador: " + "Jugador", True, (90, 50, 10))
+        self.pantalla.blit(texto_titulo, (self.ANCHOPANTALLA / 3.4, self.ALTOPANTALLA / 3.8))
+        texto_pres = self.font_txtIngresado.render("Presición: " + str(presicion) + "%", True, (90, 50, 10))
+        texto_tiempo = self.font_txtIngresado.render("Tiempo: " + str(round(tiempo, 2)), True, (90, 50, 10))
         self.pantalla.blit(texto_pres, (375, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_tiempo, (375, self.ALTOPANTALLA // 2.2))
         texto_salida = self.font_txtIngresado.render("Presione ESC para salir.", True, (90, 50, 10))
         self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
         pygame.display.update()
-=======
->>>>>>> Prueba
 
     def mostrarJuego(self, juno, jdos):
         self.pantalla.blit(self.fondo, (0, 0))
@@ -266,31 +220,14 @@ class PantallaJuego:
             self.cuentaRegresiva(self)
         else:
             self.ingresoDatos(self)
-<<<<<<< HEAD
             self.mostrarFrase(self, 1)
         ###
         pygame.display.update()
 
-
-=======
-        ###
-        pygame.display.update()
-
->>>>>>> Prueba
 def main():
     #Constantes
     FPS = 60
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
-<<<<<<< HEAD
-    SONIDO_DISPARO1 = pygame.mixer.Sound(os.path.join('Assets', 'disparo.wav'))
-    SONIDO_DISPARO2 = pygame.mixer.Sound(os.path.join('Assets', 'disparo-reverb.wav'))
-
-    #Jugadores
-    JUNO = interfazGrafica.Jugador("", 350, 340, 40, 60)
-    JUNORect = pygame.Rect(JUNO.posX, JUNO.posY, JUNO.ancho, JUNO.alto)
-    JDOS = interfazGrafica.Jugador("", 550, 30, 20, 30)
-    JDOSRect = pygame.Rect(JDOS.posX, JDOS.posY, JDOS.ancho, JDOS.alto)
-=======
     SONIDO_DISPARO1 = pygame.mixer.Sound(os.path.join('Assets', 'disparo1.wav'))
     SONIDO_DISPARO2 = pygame.mixer.Sound(os.path.join('Assets', 'disparo2.wav'))
     SONIDO_SALIR = pygame.mixer.Sound(os.path.join('Assets', 'salir.wav'))
@@ -300,7 +237,6 @@ def main():
     JUNORect = Rect(JUNO.posX, JUNO.posY, JUNO.ancho, JUNO.alto)
     JDOS = interfazGrafica.Jugador("", 550, 30, 20, 30)
     JDOSRect = Rect(JDOS.posX, JDOS.posY, JDOS.ancho, JDOS.alto)
->>>>>>> Prueba
 
     #Eventos
     DISPARA_JUNO = pygame.USEREVENT + 1
@@ -308,65 +244,21 @@ def main():
 
     pygame.display.set_caption("Cowboy type!")
     reloj = pygame.time.Clock()
-<<<<<<< HEAD
-    mostrar_menu = True
-    finaliza = False
-
-    menu_p = MenuPrincipal
-    pantalla_j = PantallaJuego
-=======
     pygame.key.set_repeat(100, 100)
 
     mostrar_menu = True
     mostrar_menu_online = False
     mostrar_juego = False
     mostrar_sala = False
->>>>>>> Prueba
+    finaliza = False
 
     #Bucle principal
     while True:
         mouse = pygame.mouse.get_pos()
-        if mostrar_menu:
-<<<<<<< HEAD
-            MenuPrincipal.mostrarMenu(menu_p)
-        elif finaliza:
+        if finaliza:
             pantalla_j.pantallaResultados(pantalla_j, puntaje, pres, tiempo_fin, tiempo_inicio)
-        else:
-            PantallaJuego.mostrarJuego(pantalla_j, JUNORect, JDOSRect)
-
-
-        #Registro de eventos de usuario
-        for event in pygame.event.get():
-            if mostrar_menu:
-                if interfazGrafica.Boton.colisionBotones(MenuPrincipal.BTN_EMPEZAR, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
-                    #SONIDO_DISPARO1.play()
-                    mostrar_menu = False
-                    tiempo_inicio= (time.time()+4)
-            if event.type == pygame.QUIT:
-                quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    quit()
-                if event.key == pygame.K_BACKSPACE and len(pantalla_j.txtIngresado2) <= 0:
-                    pantalla_j.txtIngresado = pantalla_j.txtIngresado[:-1]
-                    pantalla_j.cantborrados = pantalla_j.cantborrados + 1
-                elif event.key == pygame.K_BACKSPACE and len(pantalla_j.txtIngresado) >= 70:
-                    pantalla_j.txtIngresado2 = pantalla_j.txtIngresado2[:-1]
-                    pantalla_j.cantborrados = pantalla_j.cantborrados + 1
-                else:
-                    # print(len(pantalla_j.txtIngresado))
-                    if len(pantalla_j.txtIngresado) < 70 and len(pantalla_j.txtIngresado2) <= 0 and event.key != pygame.K_RETURN:
-                        pantalla_j.txtIngresado += event.unicode
-                    elif event.key != pygame.K_RETURN:
-                        pantalla_j.txtIngresado2 += event.unicode
-                    pantalla_j.txtIngresadoFinal = pantalla_j.txtIngresado + pantalla_j.txtIngresado2
-                if mostrar_menu == False:
-                    if event.key == pygame.K_RETURN:
-                        numfrase=1
-                        puntaje, pres = (Comparador.Comparadores.compararSolo(numfrase, pantalla_j.txtIngresadoFinal, pantalla_j.cantborrados))
-                        finaliza = True
-                        tiempo_fin = time.time()
-=======
+            mostrar_juego=False
+        if mostrar_menu:
             menu_p = MenuPrincipal
             MenuPrincipal.mostrarMenu(menu_p)
         elif mostrar_menu_online:
@@ -380,11 +272,14 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    quit()
             if mostrar_menu:
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.btn_solo, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     #SONIDO_DISPARO1.play()
                     mostrar_menu = False
+                    tiempo_inicio = (time.time() + 4)
                     mostrar_juego = True
                 if interfazGrafica.Boton.colisionBotones(MenuPrincipal.btn_online, mouse) and event.type == pygame.MOUSEBUTTONDOWN:
                     #SONIDO_DISPARO2.play()
@@ -400,6 +295,7 @@ def main():
                     if MenuOnline.entradaNombreSala.txt!="":
                         print("Hostear servidor")
                         mostrar_menu_online = False
+                        tiempo_inicio = (time.time() + 4)
                         mostrar_sala = True
                     else:
                         print("El nombre del server no puede estar vacío!")
@@ -423,10 +319,14 @@ def main():
                         MenuOnline.listo = False
             if mostrar_juego:
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        quit()
                     if event.key == pygame.K_BACKSPACE and pantalla_j.input2.get_width()==1:
                         pantalla_j.txtIngresado = pantalla_j.txtIngresado[:-1]
+                        pantalla_j.cantborrados = pantalla_j.cantborrados + 1
                     elif event.key == pygame.K_BACKSPACE and pantalla_j.input.get_width()>=pantalla_j.pantalla.get_width()-10:
                         pantalla_j.txtIngresado2 = pantalla_j.txtIngresado2[:-1]
+                        pantalla_j.cantborrados = pantalla_j.cantborrados + 1
                     else:
                         if pantalla_j.input.get_width() < pantalla_j.pantalla.get_width()-10:
                             pantalla_j.txtIngresado += event.unicode
@@ -434,19 +334,21 @@ def main():
                             if pantalla_j.input2.get_width()<=pantalla_j.pantalla.get_width()-20:
                                 pantalla_j.txtIngresado2 += event.unicode
                         pantalla_j.txtIngresadoFinal = pantalla_j.txtIngresado + pantalla_j.txtIngresado2
+                    if event.key == pygame.K_RETURN:
+                        numfrase = 1
+                        puntaje, pres = (Comparador.Comparadores.compararSolo(numfrase, pantalla_j.txtIngresadoFinal, pantalla_j.cantborrados))
+                        finaliza = True
+                        tiempo_fin = time.time()
+
                 if event.type == DISPARA_JUNO:
                     SONIDO_DISPARO1.play()
                 if event.type == DISPARA_JDOS:
                     SONIDO_DISPARO2.play()
->>>>>>> Prueba
             if event.type == DISPARA_JUNO:
                 SONIDO_DISPARO2.play()
             if event.type == DISPARA_JDOS:
                 SONIDO_DISPARO2.play()
-<<<<<<< HEAD
-=======
         ######
->>>>>>> Prueba
         reloj.tick(FPS)
 if __name__ == "__main__":
     main()
