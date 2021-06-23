@@ -336,7 +336,6 @@ def main():
                         puntaje, pres = (Comparador.Comparadores.compararSolo(numfrase, pantalla_j.txtIngresadoFinal, pantalla_j.cantborrados))
                         finaliza = True
                         tiempo_fin = time.time()
-
                 if event.type == DISPARA_JUNO:
                     SONIDO_DISPARO1.play()
                 if event.type == DISPARA_JDOS:
