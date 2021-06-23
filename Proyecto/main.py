@@ -84,19 +84,21 @@ class MenuOnline:
 class MenuPrincipal:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla_menu = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
-    FONDO = pygame.image.load(os.path.join('Assets', 'menu_placeholder.jpg'))
+    FONDO = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'menuPrincipal.png')), (900,500))
     COLOR_FONDO = (183, 155, 106)
+    font_titulo = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 60)
     font_cuerpo = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 32)
     btn_solo = interfazGrafica.Boton(ANCHOPANTALLA // 2 - 45, ALTOPANTALLA // 2, 120, 60, "SOLO", 20)
     btn_online = interfazGrafica.Boton(ANCHOPANTALLA//2-45, ALTOPANTALLA//3, 120, 60, "ONLINE", 20)
 
     def mostrarMenu(self):
         self.pantalla_menu.blit(self.FONDO, (0, 0))
+        self.pantalla_menu.blit(self.font_titulo.render("COWBOY TYPE!", True, (0,0,0)), (self.ANCHOPANTALLA//2-180,10))
 
         interfazGrafica.Boton.mostrarBoton(self.btn_online, self.pantalla_menu)
         interfazGrafica.Boton.mostrarBoton(self.btn_solo, self.pantalla_menu)
         self.pantalla_menu.blit(self.font_cuerpo.render("Presione 'ESC' para salir en cualquier momento", True,
-                                                        (250, 30, 50)),(self.ANCHOPANTALLA//2-310, self.ALTOPANTALLA-150))
+                                                        (250, 30, 50)),(self.ANCHOPANTALLA//2-310, self.ALTOPANTALLA-100))
 
         ###
         pygame.display.update()
@@ -104,10 +106,13 @@ class MenuPrincipal:
 class PantallaJuego:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
-    fondo = pygame.image.load(os.path.join('Assets', 'fondo_placeholder.jpg'))
+    escenario = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'escenario.png')), (900,500))
 
     font_cuenta_regresiva = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 55)
     n = 3
+
+    skinJuno = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'skin1.png')), (150,200))
+    skinJdos = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'skin1.png')), (70,100))
 
     areaEntrada = interfazGrafica.AreaEntradaTexto((191, 146, 42), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
     areaEntradaRect = pygame.Rect(areaEntrada.posX, areaEntrada.posY, areaEntrada.ancho, areaEntrada.alto)
@@ -120,11 +125,9 @@ class PantallaJuego:
     txtIngresado2 = ""
     txtIngresadoFinal = ""
 
-
     input = font_txtIngresado.render(txtIngresado, True, (0, 0, 0))
     input2 = font_txtIngresado.render(txtIngresado2, True, (0, 0, 0))
     cantborrados=0
-    frases = ["Hola"]
 
     def mostrarFrase(self, numfrase):
         pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(0, self.ALTOPANTALLA // 3, self.ANCHOPANTALLA, 100))
@@ -153,7 +156,6 @@ class PantallaJuego:
                     self.pantalla.blit(texto_frase3, (10, self.ALTOPANTALLA // 2.2))
 
     def ingresoDatos(self):
-
         pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect)
         pygame.draw.rect(self.pantalla, (255, 255, 255), pygame.Rect(self.areaEntrada.posX, self.areaEntrada.posY, self.areaEntradaRect.width, self.areaEntradaRect.height//2))
 
@@ -169,7 +171,6 @@ class PantallaJuego:
             pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(input.get_width() + 5, 405, 5, 20))
         elif(input.get_width()>self.pantalla.get_width()-10):
             pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(input2.get_width() + 5, 430, 5, 20))
-
 
     def cuentaRegresiva(self):
         if self.n >= 0:
@@ -192,13 +193,13 @@ class PantallaJuego:
         texto_titulo = self.font_cuenta_regresiva.render("Resultados:", True, (90, 50, 10))
         self.pantalla.blit(texto_titulo, (self.ANCHOPANTALLA / 2.7, self.ALTOPANTALLA / 3.8))
         texto_punt = self.font_txtIngresado.render("Puntaje: " + str(round(puntaje, 2)) + "pts", True, (90, 50, 10))
-        texto_pres = self.font_txtIngresado.render("Presición: " + str(round(presicion, 2)) + "%", True, (90, 50, 10))
+        texto_pres = self.font_txtIngresado.render("Precisión: " + str(round(presicion, 2)) + "%", True, (90, 50, 10))
         texto_tiempo = self.font_txtIngresado.render("Tiempo: " + str(round(tiempo, 2)) + " Secs", True, (90, 50, 10))
         self.pantalla.blit(texto_punt, (15, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_pres, (700, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_tiempo, (370, self.ALTOPANTALLA // 2.5))
         texto_salida = self.font_txtIngresado.render("Presione ESC para salir.", True, (90, 50, 10))
-        self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
+        self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA // 2.75, self.ALTOPANTALLA / 2))
         pygame.display.update()
 
     def pantallaResultadosOnline(self, presicion, tiempo_fin, tiempo_inicio):
@@ -206,7 +207,7 @@ class PantallaJuego:
         pygame.draw.rect(self.pantalla, (230, 160, 70), pygame.Rect(0, self.ALTOPANTALLA // 4, self.ANCHOPANTALLA, 175))
         texto_titulo = self.font_cuenta_regresiva.render("Ganador: " + "Jugador", True, (90, 50, 10))
         self.pantalla.blit(texto_titulo, (self.ANCHOPANTALLA / 3.4, self.ALTOPANTALLA / 3.8))
-        texto_pres = self.font_txtIngresado.render("Presición: " + str(presicion) + "%", True, (90, 50, 10))
+        texto_pres = self.font_txtIngresado.render("Precisión: " + str(presicion) + "%", True, (90, 50, 10))
         texto_tiempo = self.font_txtIngresado.render("Tiempo: " + str(round(tiempo, 2)), True, (90, 50, 10))
         self.pantalla.blit(texto_pres, (375, self.ALTOPANTALLA // 2.5))
         self.pantalla.blit(texto_tiempo, (375, self.ALTOPANTALLA // 2.2))
@@ -214,10 +215,11 @@ class PantallaJuego:
         self.pantalla.blit(texto_salida, (self.ANCHOPANTALLA / 2.75, self.ALTOPANTALLA / 2))
         pygame.display.update()
 
-    def mostrarJuego(self, juno, jdos):
-        self.pantalla.blit(self.fondo, (0, 0))
-        pygame.draw.rect(self.pantalla, (0, 0, 0), juno)
-        pygame.draw.rect(self.pantalla, (0, 0, 0), jdos)
+    def mostrarJuego(self):
+        self.pantalla.blit(self.escenario, (0, 0))
+        self.pantalla.blit(self.skinJuno, (310, 250))
+        self.pantalla.blit(self.skinJdos, (760, 10))
+
         if self.n >= 0:
             self.cuentaRegresiva(self)
         else:
@@ -226,7 +228,6 @@ class PantallaJuego:
         ###
         pygame.display.update()
 
-
 def main():
     #Constantes
     FPS = 60
@@ -234,12 +235,6 @@ def main():
     SONIDO_DISPARO1 = pygame.mixer.Sound(os.path.join('Assets', 'disparo1.wav'))
     SONIDO_DISPARO2 = pygame.mixer.Sound(os.path.join('Assets', 'disparo2.wav'))
     SONIDO_SALIR = pygame.mixer.Sound(os.path.join('Assets', 'salir.wav'))
-
-    #Jugadores
-    JUNO = interfazGrafica.Jugador("", 350, 340, 40, 60)
-    JUNORect = Rect(JUNO.posX, JUNO.posY, JUNO.ancho, JUNO.alto)
-    JDOS = interfazGrafica.Jugador("", 550, 30, 20, 30)
-    JDOSRect = Rect(JDOS.posX, JDOS.posY, JDOS.ancho, JDOS.alto)
 
     #Eventos
     DISPARA_JUNO = pygame.USEREVENT + 1
@@ -269,7 +264,7 @@ def main():
             MenuOnline.mostrarMenuOnline(menu_online)
         elif mostrar_juego:
             pantalla_j = PantallaJuego
-            PantallaJuego.mostrarJuego(pantalla_j, JUNORect, JDOSRect)
+            PantallaJuego.mostrarJuego(pantalla_j)
 
         #Registro de eventos de usuario
         for event in pygame.event.get():
