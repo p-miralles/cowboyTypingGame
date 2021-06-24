@@ -50,6 +50,7 @@ class Boton:
             return False
 
     def mostrarBoton(self, pantalla):
+        pygame.draw.rect(pantalla, (50,50,50), Rect(self.posX, self.posY, self.ancho+2, self.alto+2))
         pygame.draw.rect(pantalla, self.color, self.rect)
         surface = self.font.render(self.txt, True, self.colortxt)
         pantalla.blit(surface, (self.rect.centerx-surface.get_width()//2 , self.rect.centery-surface.get_height()//2))

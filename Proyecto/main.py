@@ -107,20 +107,20 @@ class PantallaJuego:
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     pantalla = pygame.display.set_mode((ANCHOPANTALLA, ALTOPANTALLA))
     escenario = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'escenario.png')), (900,500))
-
     font_cuenta_regresiva = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 55)
-    n = 3
-
     skinJuno = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'skin1.png')), (150,200))
     skinJdos = pygame.transform.scale(pygame.image.load(os.path.join('Assets', 'skin1.png')), (70,100))
+    sonido_reloj = pygame.mixer.Sound(os.path.join('Assets', 'reloj.wav'))
+    sonido_campana = pygame.mixer.Sound(os.path.join('Assets', 'campana.wav'))
 
-    areaEntrada = interfazGrafica.AreaEntradaTexto((191, 146, 42), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
+    areaEntrada = interfazGrafica.AreaEntradaTexto((60, 40, 8), 0, 400, ANCHOPANTALLA, ALTOPANTALLA // 4)
     areaEntradaRect = pygame.Rect(areaEntrada.posX, areaEntrada.posY, areaEntrada.ancho, areaEntrada.alto)
 
     font_txtIngresado = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
     font_txtIngresado2 = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 23)
     font_frasemostrada = pygame.font.Font(os.path.join('Assets', 'PixelCowboy.ttf'), 22)
 
+    n = 3
     txtIngresado = ""
     txtIngresado2 = ""
     txtIngresadoFinal = ""
@@ -128,9 +128,12 @@ class PantallaJuego:
     input = font_txtIngresado.render(txtIngresado, True, (0, 0, 0))
     input2 = font_txtIngresado.render(txtIngresado2, True, (0, 0, 0))
     cantborrados=0
+    surfFrase = pygame.Surface((ANCHOPANTALLA, 100))
+    surfFrase.fill((0, 0, 0))
+    surfFrase.set_alpha(200)
 
     def mostrarFrase(self, numfrase):
-        pygame.draw.rect(self.pantalla, (0, 0, 0), pygame.Rect(0, self.ALTOPANTALLA // 3, self.ANCHOPANTALLA, 100))
+        self.pantalla.blit(self.surfFrase, (0, self.ALTOPANTALLA//3))
         with open(os.path.join('Assets', 'Frases.txt')) as frase:
             frase = frase.read().splitlines()[numfrase]
             if len(frase) < 101:
@@ -158,6 +161,8 @@ class PantallaJuego:
     def ingresoDatos(self):
         pygame.draw.rect(self.pantalla, self.areaEntrada.color, self.areaEntradaRect)
         pygame.draw.rect(self.pantalla, (255, 255, 255), pygame.Rect(self.areaEntrada.posX, self.areaEntrada.posY, self.areaEntradaRect.width, self.areaEntradaRect.height//2))
+        pygame.draw.line(self.pantalla, (10, 10, 10), (0, self.areaEntrada.posY+60),(self.ANCHOPANTALLA, self.areaEntrada.posY+60), 3)
+        pygame.draw.line(self.pantalla, (10,10,10), (0,self.areaEntrada.posY),(self.ANCHOPANTALLA,self.areaEntrada.posY),5)
 
         input = self.font_txtIngresado.render(self.txtIngresado, True, (0, 0, 0))
         input2 = self.font_txtIngresado.render(self.txtIngresado2, True, (0, 0, 0))
@@ -175,10 +180,12 @@ class PantallaJuego:
     def cuentaRegresiva(self):
         if self.n >= 0:
             if self.n == 0:
+                self.sonido_campana.play()
                 texto_cuenta_regresiva = self.font_cuenta_regresiva.render("TYPE!", True, (0, 0, 0))
                 self.pantalla.blit(texto_cuenta_regresiva,
                                    (self.ANCHOPANTALLA//2 - texto_cuenta_regresiva.get_width()//2, self.ALTOPANTALLA//3))
             else:
+                self.sonido_reloj.play()
                 texto_cuenta_regresiva = self.font_cuenta_regresiva.render(str(self.n), True, (0, 0, 0))
                 self.pantalla.blit(texto_cuenta_regresiva, (self.ANCHOPANTALLA//2, self.ALTOPANTALLA//3))
         self.n -= 1
@@ -234,6 +241,7 @@ def main():
     ANCHOPANTALLA, ALTOPANTALLA = 900, 500
     SONIDO_DISPARO1 = pygame.mixer.Sound(os.path.join('Assets', 'disparo1.wav'))
     SONIDO_DISPARO2 = pygame.mixer.Sound(os.path.join('Assets', 'disparo2.wav'))
+    SONIDO_DISPARO2.set_volume(80)
     SONIDO_SALIR = pygame.mixer.Sound(os.path.join('Assets', 'salir.wav'))
 
     #Eventos
@@ -263,6 +271,7 @@ def main():
             menu_online = MenuOnline
             MenuOnline.mostrarMenuOnline(menu_online)
         elif mostrar_juego:
+            pygame.mouse.set_visible(False)
             pantalla_j = PantallaJuego
             PantallaJuego.mostrarJuego(pantalla_j)
 
@@ -333,6 +342,7 @@ def main():
                                 pantalla_j.txtIngresado2 += event.unicode
                         pantalla_j.txtIngresadoFinal = pantalla_j.txtIngresado + pantalla_j.txtIngresado2
                     if event.key == pygame.K_RETURN:
+                        SONIDO_DISPARO2.play()
                         puntaje, pres = (Comparador.Comparadores.compararSolo(numfrase, pantalla_j.txtIngresadoFinal, pantalla_j.cantborrados))
                         finaliza = True
                         tiempo_fin = time.time()
@@ -340,10 +350,6 @@ def main():
                     SONIDO_DISPARO1.play()
                 if event.type == DISPARA_JDOS:
                     SONIDO_DISPARO2.play()
-            if event.type == DISPARA_JUNO:
-                SONIDO_DISPARO2.play()
-            if event.type == DISPARA_JDOS:
-                SONIDO_DISPARO2.play()
         ######
         reloj.tick(FPS)
 if __name__ == "__main__":
